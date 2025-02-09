@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Text and Document Translator</title>
+</head>
+<body>
+    <h1>Text and Document Translator</h1>
+
+    <!-- Form dịch văn bản -->
+    <h3>Translate Text</h3>
+    <div class="translation-container">
+        <form method="POST" action="/" enctype="multipart/form-data" class="translation-form">
+            <label for="text">Enter text:</label>
+            <textarea name="text" id="text" rows="10" placeholder="Enter text to translate" name="text"></textarea>
+
+            <label for="src_lang">Source Language:</label>
+            <select name="src_lang" id="src_lang">
+                {% for lang in languages %}
+                    <option value="{{ lang.code }}">{{ lang.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="dest_lang">Target Language:</label>
+            <select name="dest_lang" id="dest_lang">
+                {% for lang in languages %}
+                    <option value="{{ lang.code }}">{{ lang.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Translate Text</button>
+        </form>
+
+        <!-- Hiển thị kết quả dịch văn bản -->
+        <div class="translation-result">
+            <h3>Translated Text:</h3>
+            <p id="translated_text_area">{{ translated_text or '' }}</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Form dịch tài liệu -->
+    <form method="POST" action="/" enctype="multipart/form-data">
+        <h3>Translate Document</h3>
+        <label for="file">Upload Document:</label>
+        <input type="file" name="file" id="file" accept=".docx, .pdf" required>
+
+        <label for="src_lang_file">Source Language:</label>
+        <select name="src_lang" id="src_lang_file">
+            {% for lang in languages %}
+                <option value="{{ lang.code }}">{{ lang.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="dest_lang_file">Target Language:</label>
+        <select name="dest_lang" id="dest_lang_file">
+            {% for lang in languages %}
+                <option value="{{ lang.code }}">{{ lang.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Translate Document</button>
+    </form>
+</body>
+</html>
