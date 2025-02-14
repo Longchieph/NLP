@@ -12,9 +12,9 @@
     <!-- Form dịch văn bản -->
     <h3>Translate Text</h3>
     <div class="translation-container">
-        <form method="POST" action="/" enctype="multipart/form-data" class="translation-form">
+        <form method="POST" action="/" enctype="multipart/form-data" class="translation-form" id="text-form">
             <label for="text">Enter text:</label>
-            <textarea name="text" id="text" rows="10" placeholder="Enter text to translate" name="text"></textarea>
+            <textarea name="text" id="text" rows="10" placeholder="Enter text to translate"></textarea>
 
             <label for="src_lang">Source Language:</label>
             <select name="src_lang" id="src_lang">
@@ -43,7 +43,7 @@
     <hr>
 
     <!-- Form dịch tài liệu -->
-    <form method="POST" action="/" enctype="multipart/form-data">
+    <form method="POST" action="/" enctype="multipart/form-data" id="file-form">
         <h3>Translate Document</h3>
         <label for="file">Upload Document:</label>
         <input type="file" name="file" id="file" accept=".docx, .pdf" required>
@@ -62,7 +62,20 @@
             {% endfor %}
         </select>
 
-        <button type="submit">Translate Document</button>
+        <button type="submit" id="translate-btn">Translate Document</button>
+        <p id="processing-message" class="hidden">Processing... Please wait.</p>
+
+        <!-- Hiển thị nút tải xuống nếu có file dịch -->
+        {% if translated_file %}
+            <a href="{{ url_for('download_translated_file') }}" class="download-btn">Download Translated File</a>
+        {% endif %}
     </form>
+
+    <script>
+        document.getElementById("file-form").addEventListener("submit", function () {
+            document.getElementById("processing-message").classList.remove("hidden");
+        });
+    </script>
+
 </body>
 </html>

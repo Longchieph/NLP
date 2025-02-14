@@ -27,7 +27,7 @@ form {
 form textarea,
 form select,
 form button,
-form input[type="text"] {
+form input[type="file"] {
     width: calc(100% - 24px); /* Đảm bảo phần tử không tràn quá form */
     padding: 12px;
     margin-bottom: 15px;
@@ -45,10 +45,27 @@ button {
     cursor: pointer;
     border: none;
     border-radius: 4px;
+    padding: 10px;
 }
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Style cho nút tải xuống */
+.download-btn {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
 }
 
 /* Style cho các thông báo dịch */
@@ -72,6 +89,19 @@ label {
     color: #333;
 }
 
+/* Style hiển thị trạng thái xử lý */
+.hidden {
+    display: none;
+}
+
+#processing-message {
+    color: #d9534f;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
 /* Thêm margin cho form */
 form {
     margin-top: 20px;
@@ -79,16 +109,16 @@ form {
 
 /* Style cho translation container (chia cột) */
 .translation-container {
-    display: flex; /* Sử dụng flexbox để chia cột */
-    gap: 20px; /* Khoảng cách giữa hai cột */
-    max-width: 800px;  /* Giới hạn chiều rộng container */
-    margin: 20px auto; /* Căn giữa container */
+    display: flex;
+    gap: 20px;
+    max-width: 800px;
+    margin: 20px auto;
 }
 
 /* Style cho form dịch (cột bên trái) */
 .translation-form {
-    width: 50%; /* Chiếm 50% chiều rộng của container */
-    margin: 0; /* Loại bỏ margin mặc định của form */
+    width: 50%;
+    margin: 0;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -97,19 +127,18 @@ form {
 
 /* Style cho kết quả dịch (cột bên phải) */
 .translation-result {
-    width: 50%; /* Chiếm 50% chiều rộng của container */
+    width: 50%;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    word-wrap: break-word; /* Xuống dòng khi văn bản quá dài */
+    word-wrap: break-word;
 }
 
 #translated_text_area {
-    white-space: pre-wrap; /* Để giữ xuống dòng và khoảng trắng */
+    white-space: pre-wrap;
     font-size: 16px;
 }
-
 
 /* Đảm bảo form hiển thị đẹp trên các thiết bị di động */
 @media (max-width: 768px) {
@@ -127,11 +156,11 @@ form {
     }
 
     .translation-container {
-        flex-direction: column; /* Chuyển thành một cột trên màn hình nhỏ */
+        flex-direction: column;
     }
 
     .translation-form,
     .translation-result {
-        width: 100%; /* Chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+        width: 100%;
     }
 }
