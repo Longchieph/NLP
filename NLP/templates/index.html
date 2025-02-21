@@ -7,30 +7,40 @@
     <title>Text and Document Translator</title>
 </head>
 <body>
-    <h1>Text and Document Translator</h1>
+    <h1>
+        <span class="text">Text</span> and 
+        <span class="document">Document</span> Translator
+    </h1>
 
     <!-- Form dịch văn bản -->
-    <h3>Translate Text</h3>
     <div class="translation-container">
         <form method="POST" action="/" enctype="multipart/form-data" class="translation-form" id="text-form">
-            <label for="text">Enter text:</label>
+            <h3 for="text">Enter text:</h3>
             <textarea name="text" id="text" rows="10" placeholder="Enter text to translate"></textarea>
 
-            <label for="src_lang">Source Language:</label>
-            <select name="src_lang" id="src_lang">
-                {% for lang in languages %}
-                    <option value="{{ lang.code }}">{{ lang.name }}</option>
-                {% endfor %}
-            </select>
-
-            <label for="dest_lang">Target Language:</label>
-            <select name="dest_lang" id="dest_lang">
-                {% for lang in languages %}
-                    <option value="{{ lang.code }}">{{ lang.name }}</option>
-                {% endfor %}
-            </select>
+            <div class="language-selection">
+                <div>
+                    <label for="source_language">Source Language:</label>
+                    <select id="source_language" name="source_language">
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="es">Spanish</option>
+                        <!-- Thêm các ngôn ngữ khác nếu cần -->
+                    </select>
+                </div>
+                <div>
+                    <label for="target_language">Target Language:</label>
+                    <select id="target_language" name="target_language">
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="es">Spanish</option>
+                        <!-- Thêm các ngôn ngữ khác nếu cần -->
+                    </select>
+                </div>
+            </div>
 
             <button type="submit">Translate Text</button>
+            <button type="button" id="show-doc-form-btn">Translate Document</button>
         </form>
 
         <!-- Hiển thị kết quả dịch văn bản -->
@@ -41,42 +51,49 @@
         </div>
     </div>
 
-    <hr>
+  <!-- Form dịch tài liệu trong modal -->
+<div class="modal hidden" id="document-modal">
+    <div class="modal-content">
+        <span class="close-btn" id="close-modal-btn">&times;</span>
+        <form method="POST" action="/" enctype="multipart/form-data" id="file-form">
+            <label for="file">Upload Document:</label>
+            <input type="file" name="file" id="file" accept=".docx, .pdf" required>
 
-    <!-- Form dịch tài liệu -->
-    <form method="POST" action="/" enctype="multipart/form-data" id="file-form">
-        <h3>Translate Document</h3>
-        <label for="file">Upload Document:</label>
-        <input type="file" name="file" id="file" accept=".docx, .pdf" required>
+            <label for="src_lang_file">Source Language:</label>
+            <select name="src_lang" id="src_lang_file">
+                {% for lang in languages %}
+                    <option value="{{ lang.code }}">{{ lang.name }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="src_lang_file">Source Language:</label>
-        <select name="src_lang" id="src_lang_file">
-            {% for lang in languages %}
-                <option value="{{ lang.code }}">{{ lang.name }}</option>
-            {% endfor %}
-        </select>
+            <label for="dest_lang_file">Target Language:</label>
+            <select name="dest_lang" id="dest_lang_file">
+                {% for lang in languages %}
+                    <option value="{{ lang.code }}">{{ lang.name }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="dest_lang_file">Target Language:</label>
-        <select name="dest_lang" id="dest_lang_file">
-            {% for lang in languages %}
-                <option value="{{ lang.code }}">{{ lang.name }}</option>
-            {% endfor %}
-        </select>
+            <button type="submit" id="translate-btn">Translate Document</button>
+            <p id="processing-message" class="hidden">Processing... Please wait.</p>
 
-        <button type="submit" id="translate-btn">Translate Document</button>
-        <p id="processing-message" class="hidden">Processing... Please wait.</p>
-
-        <!-- Hiển thị nút tải xuống nếu có file dịch -->
-        {% if translated_file %}
-            <a href="{{ url_for('download_translated_file') }}" class="download-btn">Download Translated File</a>
-        {% endif %}
-    </form>
+            <!-- Hiển thị nút tải xuống nếu có file dịch -->
+            {% if translated_file %}
+                <a href="{{ url_for('download_translated_file') }}" class="download-btn">Download Translated File</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
 
     <script>
-        document.getElementById("file-form").addEventListener("submit", function () {
-            document.getElementById("processing-message").classList.remove("hidden");
-        });
-    </script>
+        document.getElementById("show-doc-form-btn").addEventListener("click", function () {
+    document.getElementById("document-modal").classList.add("show");
+    document.body.style.overflow = 'hidden'; // Ẩn cuộn trang
+});
 
+document.getElementById("close-modal-btn").addEventListener("click", function () {
+    document.getElementById("document-modal").classList.remove("show");
+    document.body.style.overflow = 'auto'; // Hiện lại cuộn trang
+});
+    </script>
 </body>
 </html>
