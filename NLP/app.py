@@ -80,15 +80,14 @@ def translate():
     translated_text = None
     error_msg = None
     translated_file = None
+    src_lang = request.form.get('src_lang', 'en')  # Mặc định là English
+    dest_lang = request.form.get('dest_lang', 'vi')  # Mặc định là Vietnamese
     languages = [
         {"code": "en", "name": "English"},
         {"code": "vi", "name": "Vietnamese"},
     ]
     
     if request.method == 'POST':
-        src_lang = request.form.get('src_lang')
-        dest_lang = request.form.get('dest_lang')
-
         if not src_lang or not dest_lang:
             error_msg = "Please select both source and target languages."
         else:
@@ -115,7 +114,7 @@ def translate():
                 else:
                     error_msg = "Unsupported file format. Please upload a .docx or .pdf file."
 
-    return render_template('index.html', translated_text=translated_text, translated_file=translated_file, languages=languages, error_msg=error_msg)
+    return render_template('index.html', translated_text=translated_text, translated_file=translated_file,src_lang=src_lang, dest_lang=dest_lang, languages=languages, error_msg=error_msg)
 
 @app.route('/download/<filename>')
 def download_translated_file(filename):

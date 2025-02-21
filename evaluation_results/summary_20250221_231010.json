@@ -1,0 +1,19 @@
+{
+  "config": {
+    "timestamp": "20250221_231010",
+    "num_samples": 1000,
+    "dataset": "English-Vietnamese Kaggle"
+  },
+  "metrics": {
+    "en_vi_bleu": 0.10277501758745672,
+    "en_vi_rouge1_f": 0.04645081454964721,
+    "en_vi_rouge2_f": 0.0026636593604142215,
+    "en_vi_rougeL_f": 0.041189699009647966,
+    "en_vi_meteor": 0.001787240719806312,
+    "vi_en_bleu": 1.4199337919923714,
+    "vi_en_rouge1_f": 0.12654545409890408,
+    "vi_en_rouge2_f": 0.015220238095238096,
+    "vi_en_rougeL_f": 0.12344264579609579,
+    "vi_en_meteor": 0.08842330897475466
+  }
+}
