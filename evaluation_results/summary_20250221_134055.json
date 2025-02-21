@@ -1,0 +1,19 @@
+{
+  "config": {
+    "timestamp": "20250221_134055",
+    "num_samples": 3000,
+    "dataset": "opus100/en-vi"
+  },
+  "metrics": {
+    "en_vi_bleu": 27.264521281396448,
+    "en_vi_rouge1_f": 0.547005691650647,
+    "en_vi_rouge2_f": 0.3520195676029364,
+    "en_vi_rougeL_f": 0.5122653755773605,
+    "en_vi_meteor": 0.4625840645569768,
+    "vi_en_bleu": 42.273992119324745,
+    "vi_en_rouge1_f": 0.6196681936005085,
+    "vi_en_rouge2_f": 0.3821981626387207,
+    "vi_en_rougeL_f": 0.6112879784757608,
+    "vi_en_meteor": 0.6126810590690228
+  }
+}
