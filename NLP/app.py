@@ -15,21 +15,33 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 models_cache = {}
 
 def get_model(src_lang, dest_lang):
-    """Tải model dịch với caching để tránh load lại nhiều lần."""
     key = f"{src_lang}-{dest_lang}"
+    
     if key not in models_cache:
-        model_name = f"Helsinki-NLP/opus-mt-{src_lang}-{dest_lang}"
-        tokenizer = MarianTokenizer.from_pretrained(model_name)
-        model = MarianMTModel.from_pretrained(model_name)
+        if key == "en-vi":
+            model_path = "./results/fine-tuned-en-vi"
+        elif key == "vi-en":
+            model_path = "./results/fine-tuned-vi-en"
+        else:
+            model_path = f"Helsinki-NLP/opus-mt-{src_lang}-{dest_lang}"
+        
+        print(f"🔍 Loading model from: {model_path}")  # Kiểm tra model có đúng không
+        
+        tokenizer = MarianTokenizer.from_pretrained(model_path)
+        model = MarianMTModel.from_pretrained(model_path)
         models_cache[key] = (model, tokenizer)
+
     return models_cache[key]
 
 def translate_text(text, model, tokenizer):
     """Dịch văn bản sử dụng mô hình MarianMT."""
     inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
-    with torch.no_grad():  # Tăng tốc dịch
+    with torch.no_grad():
         translated = model.generate(**inputs)
-    return tokenizer.decode(translated[0], skip_special_tokens=True)
+    
+    result = tokenizer.decode(translated[0], skip_special_tokens=True)
+    print(f"Original: {text}\nTranslated: {result}\n")  # Debug
+    return result
 
 def translate_word_file(filepath, model, tokenizer):
     """Dịch nội dung file Word (.docx)."""
@@ -113,3 +125,4 @@ def download_translated_file(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
