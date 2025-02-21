@@ -21,19 +21,19 @@
             <div class="language-selection">
                 <div>
                     <label for="source_language">Source Language:</label>
-                    <select id="source_language" name="source_language">
-                        <option value="en">English</option>
-                        <option value="fr">French</option>
-                        <option value="es">Spanish</option>
+                    <select id="source_language" name="src_lang">
+                        <option value="en" {% if src_lang == "en" %}selected{% endif %}>English</option>
+                        <option value="vi" {% if src_lang == "vi" %}selected{% endif %}>Vietnamese</option>
+                        
                         <!-- Thêm các ngôn ngữ khác nếu cần -->
                     </select>
                 </div>
                 <div>
                     <label for="target_language">Target Language:</label>
-                    <select id="target_language" name="target_language">
-                        <option value="en">English</option>
-                        <option value="fr">French</option>
-                        <option value="es">Spanish</option>
+                    <select id="target_language" name="dest_lang">
+                        <option value="en" {% if dest_lang == "en" %}selected{% endif %}>English</option>
+                        <option value="vi" {% if dest_lang == "vi" %}selected{% endif %}>Vietnamese</option>
+                        
                         <!-- Thêm các ngôn ngữ khác nếu cần -->
                     </select>
                 </div>
@@ -55,34 +55,46 @@
 <div class="modal hidden" id="document-modal">
     <div class="modal-content">
         <span class="close-btn" id="close-modal-btn">&times;</span>
+        <h2>Translate Document</h2>
+        
         <form method="POST" action="/" enctype="multipart/form-data" id="file-form">
-            <label for="file">Upload Document:</label>
-            <input type="file" name="file" id="file" accept=".docx, .pdf" required>
+            <div class="form-group">
+                <label for="file">Upload Document:</label>
+                <input type="file" name="file" id="file" accept=".docx, .pdf" required>
+            </div>
 
-            <label for="src_lang_file">Source Language:</label>
-            <select name="src_lang" id="src_lang_file">
-                {% for lang in languages %}
-                    <option value="{{ lang.code }}">{{ lang.name }}</option>
-                {% endfor %}
-            </select>
+            <div class="form-group">
+                <label for="src_lang_file">Source Language:</label>
+                <select name="src_lang" id="src_lang_file">
+                    {% for lang in languages %}
+                        <option value="{{ lang.code }}" {% if lang.code == src_lang %}selected{% endif %}>
+                            {{ lang.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-            <label for="dest_lang_file">Target Language:</label>
-            <select name="dest_lang" id="dest_lang_file">
-                {% for lang in languages %}
-                    <option value="{{ lang.code }}">{{ lang.name }}</option>
-                {% endfor %}
-            </select>
+            <div class="form-group">
+                <label for="dest_lang_file">Target Language:</label>
+                <select name="dest_lang" id="dest_lang_file">
+                    {% for lang in languages %}
+                        <option value="{{ lang.code }}" {% if lang.code == dest_lang %}selected{% endif %}>
+                            {{ lang.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <button type="submit" id="translate-btn">Translate Document</button>
-            <p id="processing-message" class="hidden">Processing... Please wait.</p>
+            
 
-            <!-- Hiển thị nút tải xuống nếu có file dịch -->
             {% if translated_file %}
-                <a href="{{ url_for('download_translated_file') }}" class="download-btn">Download Translated File</a>
+                <a href="{{ url_for('download_translated_file', filename=translated_file) }}" class="download-btn">Download Translated File</a>
             {% endif %}
         </form>
     </div>
 </div>
+
 
     <script>
         document.getElementById("show-doc-form-btn").addEventListener("click", function () {
