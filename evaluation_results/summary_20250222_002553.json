@@ -1,0 +1,19 @@
+{
+  "config": {
+    "timestamp": "20250222_002553",
+    "num_samples": 1000,
+    "dataset": "harouzie/vi_en-translation"
+  },
+  "metrics": {
+    "en_vi_bleu": 31.99831612320925,
+    "en_vi_rouge1_f": 0.7094261126791133,
+    "en_vi_rouge2_f": 0.5623291847856405,
+    "en_vi_rougeL_f": 0.6808389490936844,
+    "en_vi_meteor": 0.6260677559160995,
+    "vi_en_bleu": 45.825158444366096,
+    "vi_en_rouge1_f": 0.7560971789929629,
+    "vi_en_rouge2_f": 0.5680980502200231,
+    "vi_en_rougeL_f": 0.7500483062493833,
+    "vi_en_meteor": 0.729878212294135
+  }
+}
