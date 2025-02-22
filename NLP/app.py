@@ -94,25 +94,17 @@ def translate_word_file(filepath, model, tokenizer):
 
 def translate_pdf_file(filepath, model, tokenizer):
     try:
+        # Xác định đường dẫn đến file font
+        font_path = os.path.join(app.root_path, 'fonts', 'arial.ttf')
+        if not os.path.isfile(font_path):
+            raise FileNotFoundError(f"Font file not found: {font_path}")
+
         with fitz.open(filepath) as doc:
             translated_doc = fitz.open()
-            font_path = os.path.join("templates", "ARIAL.TTF")
-            # Sử dụng font hỗ trợ tiếng Việt
-            try:
-                
-                font = fitz.Font(fontfile=font_path)
-                font_name = font.name.replace(" ", "")  # Lấy tên font
-            except:
-                font_name = "times"  # Fallback font
-            
             for page in doc:
-                # Tạo trang mới với kích thước giống nguyên bản
-                new_page = translated_doc.new_page(
-                    width=page.rect.width,
-                    height=page.rect.height
-                )
+                new_page = translated_doc.new_page(width=page.rect.width, height=page.rect.height)
                 
-                # Sao chép hình ảnh từ trang gốc
+                # Sao chép hình ảnh
                 for img in page.get_images(full=True):
                     xref = img[0]
                     base_image = doc.extract_image(xref)
@@ -123,31 +115,30 @@ def translate_pdf_file(filepath, model, tokenizer):
                     )
                 
                 # Xử lý văn bản
-                for block in page.get_text("dict")["blocks"]:
-                    if block["type"] == 0:  # Chỉ xử lý khối văn bản
+                page_dict = page.get_text("dict")
+                for block in page_dict["blocks"]:
+                    if block["type"] == 0:
                         for line in block["lines"]:
                             for span in line["spans"]:
-                                # Chuẩn hóa văn bản
                                 raw_text = normalize_text(span["text"])
                                 translated = translate_text(raw_text, model, tokenizer)
                                 
-                                # Xử lý màu sắc
                                 try:
-                                    color = tuple([c/255 for c in span["color"][:3]])  # Chuẩn hóa màu sắc
-                                except:
-                                    color = (0, 0, 0)  # Mặc định là màu đen
+                                    color = tuple([c/255 for c in span["color"][:3]])
+                                except Exception:
+                                    color = (0, 0, 0)
                                 
-                                # Chèn văn bản đã dịch vào trang mới
+                                # Chèn text với custom font
                                 new_page.insert_text(
-                                    point=span["origin"],  # Giữ nguyên vị trí
+                                    point=span["origin"],
                                     text=translated,
-                                    fontsize=span["size"],  # Giữ nguyên kích thước font
-                                    fontname=font_name,  # Sử dụng tên font
+                                    fontsize=span["size"],
+                                    fontname="Arial",
+                                    fontfile=font_path, 
                                     color=color,
-                                    render_mode=0  # Chế độ render mặc định
+                                    render_mode=0
                                 )
             
-            # Lưu file PDF mới
             translated_filename = f"translated_{os.path.basename(filepath)}"
             translated_path = os.path.join(app.config['UPLOAD_FOLDER'], translated_filename)
             translated_doc.save(translated_path, garbage=4, deflate=True, clean=True)
