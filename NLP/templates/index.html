@@ -24,8 +24,9 @@
                     <select id="source_language" name="src_lang">
                         <option value="en" {% if src_lang == "en" %}selected{% endif %}>English</option>
                         <option value="vi" {% if src_lang == "vi" %}selected{% endif %}>Vietnamese</option>
-                        <option value="fr" {% if dest_lang == "fr" %}selected{% endif %}>France</option>
-                        <!-- Thêm các ngôn ngữ khác nếu cần -->
+                        <option value="fr" {% if src_lang == "fr" %}selected{% endif %}>French</option>
+                        <option value="es" {% if src_lang == "es" %}selected{% endif %}>Spanish</option>
+                        <option value="de" {% if src_lang == "de" %}selected{% endif %}>German</option>
                     </select>
                 </div>
                 <div>
@@ -33,8 +34,9 @@
                     <select id="target_language" name="dest_lang">
                         <option value="en" {% if dest_lang == "en" %}selected{% endif %}>English</option>
                         <option value="vi" {% if dest_lang == "vi" %}selected{% endif %}>Vietnamese</option>
-                        <option value="fr" {% if dest_lang == "fr" %}selected{% endif %}>France</option>
-                        <!-- Thêm các ngôn ngữ khác nếu cần -->
+                        <option value="fr" {% if dest_lang == "fr" %}selected{% endif %}>French</option>
+                        <option value="es" {% if dest_lang == "es" %}selected{% endif %}>Spanish</option>
+                        <option value="de" {% if dest_lang == "de" %}selected{% endif %}>German</option>
                     </select>
                 </div>
             </div>
