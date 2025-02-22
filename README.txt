@@ -58,31 +58,38 @@ pip install flask transformers torch sentencepiece werkzeug python-docx pymupdf
    ```
    http://127.0.0.1:5000
    ```
-
 ## Model and Data Setup
 
-This project uses **Helsinki-NLP/opus-mt** models from Hugging Face for translation. The model is automatically downloaded when the application is first run.
+This project uses pre-trained MarianMT models from Hugging Face for translation. These models, specifically designed for machine translation, support a wide range of language pairs and are known for their efficiency. The model is automatically downloaded when the application is first run and stored in the Hugging Face transformers cache directory. Subsequent runs will load the model from this local cache.
+
+To select a model for a specific language pair, visit the Helsinki-NLP organization on Hugging Face (https://huggingface.co/Helsinki-NLP). Models are named in the format `opus-mt-<source_language>-<target_language>`. For example, to translate from French ('fr') to German ('de'), use `Helsinki-NLP/opus-mt-fr-de`. Modify the `model_name` variable in the following code to change the model.
 
 To manually download models:
 
-```sh
+```python
+import torch
 from transformers import MarianMTModel, MarianTokenizer
+
 model_name = "Helsinki-NLP/opus-mt-en-vi"  # Change based on language pair
 model = MarianMTModel.from_pretrained(model_name)
 tokenizer = MarianTokenizer.from_pretrained(model_name)
-```
+
+# If using GPU:
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
 ## Folder Structure
 
 ```
 project-directory/
-│-- app.py                   # Main Flask application
-│-- requirements.txt         # Dependencies list
-│-- uploads/                 # Directory for uploaded files
+│-- app.py # Main Flask application
+│-- uploads/ # Directory to store uploaded files
 │-- templates/
-│   └── index.html           # HTML template
+│   └── index.html # HTML template
 │-- static/
-│   └── styles.css           # CSS for styling
+│   └── styles.css # CSS for styling
+│-- evaluation.py # Translation evaluation script
+│-- evaluationBi.py # Bi-directional evaluation script
 ```
 
 ## Usage
@@ -98,11 +105,14 @@ project-directory/
 
 ## References
 
-- Hugging Face MarianMT: [https://huggingface.co/Helsinki-NLP](https://huggingface.co/Helsinki-NLP)
-- Flask Documentation: [https://flask.palletsprojects.com/](https://flask.palletsprojects.com/)
-- PyTorch Installation Guide: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/)
-- SentencePiece Library: [https://github.com/google/sentencepiece](https://github.com/google/sentencepiece)
-
+- Hugging Face MarianMT: https://huggingface.co/Helsinki-NLP
+- Flask Documentation: https://flask.palletsprojects.com/
+- PyTorch Installation Guide: https://pytorch.org/get-started/locally/
+- SentencePiece Library: https://github.com/google/sentencepiece
+- sacreBLEU: https://github.com/mjpost/sacrebleu
+- rouge-score: https://github.com/google-research/google-research/tree/master/rouge
+- NLTK: https://www.nltk.org/
+- Hugging Face Datasets: https://huggingface.co/docs/datasets/
 ## License
 
 This project is licensed under the MIT License.
