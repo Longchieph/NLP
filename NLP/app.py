@@ -19,7 +19,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config['JSON_AS_ASCII'] = False
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
-SUPPORTED_PAIRS = ['en-vi', 'vi-en', 'en-fr', 'fr-en','vi-fr', 'fr-vi']
+SUPPORTED_PAIRS = ['en-vi', 'vi-en', 'en-fr', 'fr-en','vi-fr', 'fr-vi', 'es-en', 
+                   'en-es', 'es-fr', 'fr-es', 'es-vi', 'vi-es', 'en-de', 'de-en', 
+                   'vi-de', 'de-vi']
 models_cache = {}
 
 def get_model(src_lang, dest_lang):
@@ -166,8 +168,13 @@ def translate():
     translated_file = None
     src_lang = request.form.get('src_lang', 'en')
     dest_lang = request.form.get('dest_lang', 'vi')
-    languages = [{"code": "en", "name": "English"}, {"code": "vi", "name": "Vietnamese"}]
-
+    languages = [
+    {"code": "en", "name": "English"},
+    {"code": "vi", "name": "Vietnamese"},
+    {"code": "fr", "name": "French"},
+    {"code": "es", "name": "Spanish"},
+    {"code": "de", "name": "German"}
+    ]
     if request.method == 'POST':
         try:
             if not src_lang or not dest_lang:
